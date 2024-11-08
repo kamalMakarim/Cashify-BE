@@ -3,13 +3,13 @@ const mongoose =  require("mongoose");
 const TrashSchema = new mongoose.Schema({
     trashType: {
         type: String,
-        enum: ["cans", "bottles", "glass", "cardboard"],
+        enum: ["cardboard", "glass", "metal", "paper", "plastic", "trash"],
         required: true
     },
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
-        required: true
+        required: false
     },
     collected_at: {
         type: mongoose.Schema.Types.ObjectId,

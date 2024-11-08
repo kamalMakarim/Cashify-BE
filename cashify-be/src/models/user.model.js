@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const UserSchema = new mongoose.Schema({
-    username: {
+    email:{
         type: String,
         required: true,
         unique: true
@@ -12,6 +12,10 @@ const UserSchema = new mongoose.Schema({
     balance: {
         type: Number,
         default: 0
+    },
+    phoneNumber:{
+        type: String,
+        required: false,
     },
     role: {
         type: String,

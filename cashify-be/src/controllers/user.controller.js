@@ -1,80 +1,46 @@
 const User = require("../models/user.model");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 
-exports.getAllUsers = async (req, res) => {
-  try {
-    const users = await User.find();
-    res.status(200).json({ success: true, message: "Successfully retrieved all users", data: users });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
-
-exports.getUserById = async (req, res) => {
-  try {
-    const user = await User.findById(req.query.id);
-    res.status(200).json({ success: true, message: "Successfully retrieved user", data: user });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
 
 exports.login = async (req, res) => {
-  if (!req.body.username || !req.body.password) {
-    return res.status(400).json({ message: "Username and password required" });
-  }
   try {
-    const user = await User.findOne({
-      username: req.body.username,
-      password: req.body.password,
+    const { email, password } = req.body;
+    if (!email) throw new Error("Please provide username");
+    if (!password) throw new Error("Please provide password");
+    const user = await User.find({ email: email });
+    if(user.length === 0) throw new Error("Wrong username or password");
+
+    const validPassword = await bcrypt.compare(password, user[0].password);
+
+    if (!validPassword) throw new Error("Wrong username or password");
+    const token = jwt.sign(
+      {role: user[0].role, email: user[0].email},
+      process.env.JWT_SECRET,
+      { expiresIn: "3h" }
+    );
+
+    res.json({
+      message: "Login successful",
+      token,
+      data: { email: user[0].email, role: user[0].role },
     });
-    res.status(200).json({ success: true, message: "Successfully logged in", data: user });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(400).json({ message: error.message });
   }
 };
 
-exports.createUser = async (req, res) => {
-  if (!req.body.username || !req.body.password) {
-    return res.status(400).json({ message: "Username and password required" });
-  }
+exports.register = async (req, res) => {
   try {
-    const user = new User({
-      username: req.body.username,
-      password: req.body.password,
-    });
+    const { email, password} = req.body;
+    if (!email) throw new Error("Please provide email");
+    if (!password) throw new Error("Please provide password");
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const user = new User({ email, password: hashedPassword});
     await user.save();
-    res.status(201).json({ success: true, message: "User created successfully", data: user });
+    res.json({ message: "User registered successfully" });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(400).json({ message: error.message });
   }
-};
+}
 
-exports.updateUser = async (req, res) => {
-  if (!req.query.id) {
-    return res.status(400).json({ message: "Id required" });
-  }
-  if (!req.body.username || !req.body.password) {
-    return res.status(400).json({ message: "Username and password required" });
-  }
-  try {
-    const user = await User.findByIdAndUpdate(req.query.id, {
-      username: req.body.username,
-      password: req.body.password,
-    });
-    res.status(200).json({ success: true, message: "User updated successfully", data: user });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
-
-exports.deleteUser = async (req, res) => {
-  if (!req.query.id) {
-    return res.status(400).json({ message: "Id required" });
-  }
-  try {
-    const user = await User.findByIdAndDelete(req.query.id);
-    res.status(200).json({ success: true, message: "User deleted successfully", data: user });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
