@@ -4,14 +4,14 @@ const User = require("../models/user.model");
 
 exports.login = async (req, res) => {
   try {
-    const { email, password } = body;
+    const { email, password } = req.body;
     if (!email) throw new Error("Please provide email");
     if (!password) throw new Error("Please provide password");
     const user = await User.findOne({ email });
 
     if (!user) throw new Error("Wrong email or password");
 
-    const validPassword = await bcrypt.compare(password, user[0].password);
+    const validPassword = await bcrypt.compare(password, user.password);
 
     if (!validPassword) throw new Error("Wrong email or password");
     const token = jwt.sign(
@@ -38,6 +38,6 @@ exports.login = async (req, res) => {
       },
     });
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    res.status(400).json({ success: false, message: error.message });
   }
 };
