@@ -37,6 +37,7 @@ exports.claim = async (req, res) => {
       .status(400)
       .json({ success: false, message: "Trash ID is required" });
   }
+  console.log(req.user);
   if (!req.user._id) {
     return res
       .status(400)
@@ -57,10 +58,16 @@ exports.claim = async (req, res) => {
         .status(400)
         .json({ success: false, message: "Trash not found" });
     }
+    if (trash.status === "claimed") {
+      return res
+        .status(400)
+        .json({ success: false, message: "Trash already claimed" });
+    }
+    trash.status = "claimed";
     await trash.save();
     user.balance += trashPrice[trash.trashType];
     await user.save();
-    res.json({ success: true, message: "Trash claimed successfully" });
+    res.json({ success: true, message: "Trash claimed successfully", data: trash });
   } catch (error) {
     res.status(400).json({ success: false, message: error.message });
   }

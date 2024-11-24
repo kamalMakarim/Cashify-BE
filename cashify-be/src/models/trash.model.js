@@ -14,6 +14,11 @@ const TrashSchema = new mongoose.Schema({
     collected_at: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "CollectionCenter",
+    },
+    status: {
+        type: String,
+        enum: ["pending", "claimed"],
+        default: "pending"
     }
 });
 

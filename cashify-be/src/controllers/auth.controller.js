@@ -15,7 +15,7 @@ exports.login = async (req, res) => {
 
     if (!validPassword) throw new Error("Wrong email or password");
     const token = jwt.sign(
-      { role: user.role, email: user.email },
+      { role: user.role, email: user.email, _id: user._id },
       process.env.JWT_SECRET,
       { expiresIn: "3h" }
     );
