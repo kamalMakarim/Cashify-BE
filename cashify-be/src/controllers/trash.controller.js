@@ -16,14 +16,14 @@ exports.create = async (req, res) => {
       .status(400)
       .json({ success: false, message: "Trash type is required" });
   }
-  if (!req.body.collecter_id) {
+  if (!req.body.collector_id) {
     return res
       .status(400)
-      .json({ success: false, message: "Collecter ID is required" });
+      .json({ success: false, message: "collector ID is required" });
   }
   try {
-    const { trashType, collecter_id } = req.body;
-    const trash = new Trash({ trashType, collected_at: collecter_id });
+    const { trashType, collector_id } = req.body;
+    const trash = new Trash({ trashType, collected_at: collector_id });
     await trash.save();
     res.json({ success: true, message: "Trash created successfully", data: trash });
   } catch (error) {

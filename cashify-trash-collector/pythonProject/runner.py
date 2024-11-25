@@ -4,9 +4,10 @@ import requests
 import numpy as np
 from torchvision import transforms, models
 import time
+import qrcode
 
 # Backend server URL (replace with your server's URL)
-BACKEND_URL = "http://your-backend-server.com/api/trash-detected"
+BACKEND_URL = "http://localhost:5000/trash/create"
 
 # Define the class labels based on your folder structure
 class_labels = ['cardboard', 'glass', 'metal', 'paper', 'plastic', 'trash']
@@ -53,10 +54,10 @@ def capture_and_classify():
         # Get the predicted label
         label = class_labels[class_index]
 
-        # Check if the detected object is trash
-        if label == 'trash':
-            print("Trash detected!")
-            send_to_backend(frame)
+        # if
+        if cv2.waitKey(1) & 0xFF == ord('s'):
+            print("button pressed")
+            send_to_backend(frame, label)
 
         # Display the frame with the predicted label
         cv2.putText(frame, label, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
@@ -71,19 +72,38 @@ def capture_and_classify():
     cv2.destroyAllWindows()
 
 # Function to send image to backend when trash is detected
-def send_to_backend(image):
+def send_to_backend(image, label):
     _, img_encoded = cv2.imencode('.jpg', image)
     img_bytes = img_encoded.tobytes()
 
     files = {'file': ('trash.jpg', img_bytes, 'image/jpeg')}
-    data = {'timestamp': time.time()}
+    data = {'trashType': label, 'collector_id': "6741b22dadd8499ea5246ef7"}
 
     try:
-        response = requests.post(BACKEND_URL, files=files, data=data)
+        response = requests.post(BACKEND_URL, data=data, headers={'Content-Type': 'application/x-www-form-urlencoded'})
         if response.status_code == 200:
-            print("Successfully sent data to backend")
+            resdata = response.json().get('data', {}).get('_id', 'No ID found')
+            qr_code = np.zeros((300, 300, 3), dtype=np.uint8)
+            qr_code = cv2.putText(qr_code, resdata, (10, 150), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
+            
+            # Generate QR code
+            qr = qrcode.QRCode(
+            version=1,
+            error_correction=qrcode.constants.ERROR_CORRECT_L,
+            box_size=10,
+            border=4,
+            )
+            qr.add_data(resdata)
+            qr.make(fit=True)
+            qr_img = qr.make_image(fill='black', back_color='white')
+            qr_img = np.array(qr_img.convert('RGB'))
+            
+            cv2.imshow("QR Code", qr_img)
+            cv2.waitKey(0)
+            cv2.destroyWindow("QR Code")
+            print(f"Data sent successfully: {resdata}")
         else:
-            print(f"Failed to send data: {response.status_code}")
+            print(f"Failed to send data: {response}")
     except requests.exceptions.RequestException as e:
         print(f"Error sending data to backend: {e}")
 
