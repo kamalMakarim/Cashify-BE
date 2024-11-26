@@ -18,6 +18,7 @@ app.use(
     allowedHeaders: ['X-Requested-With', 'Content-Type', 'Authorization', 'Cookie']
   })
 );
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
