@@ -81,7 +81,10 @@ exports.claim = async (req, res) => {
           ? ".eco-cashify.vercel.app"
           : undefined,
       path: "/",
-      domain: process.env.FE_URL,
+      domain:
+        process.env.NODE_ENV === "production"
+          ? ".eco-cashify.vercel.app"
+          : undefined,
       path: "/",
     });
 
