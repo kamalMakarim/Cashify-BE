@@ -21,14 +21,14 @@ exports.login = async (req, res) => {
     );
 
     res.cookie("token", token, {
-      httpOnly: process.env.NODE_ENV === "production",
+      httpOnly: false,
       secure: process.env.NODE_ENV === "production",
       sameSite: "Strict",
       maxAge: process.env.JWT_EXPIRES_IN * 60 * 60 * 1000,
     });
 
     res.cookie("user", JSON.stringify(user), {
-      httpOnly: process.env.NODE_ENV === "production",
+      httpOnly: false,
       secure: process.env.NODE_ENV === "production",
       sameSite: "Strict",
       maxAge: process.env.JWT_EXPIRES_IN * 60 * 60 * 1000,
