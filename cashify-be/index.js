@@ -14,6 +14,8 @@ app.use(
   cors({
     origin: process.env.FE_URL,
     credentials: true,
+    methods: 'GET,POST,PUT,DELETE,OPTIONS',
+    allowedHeaders: ['X-Requested-With', 'Content-Type', 'Authorization', 'Cookie']
   })
 );
 app.use(express.json());
