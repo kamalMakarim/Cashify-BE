@@ -24,10 +24,7 @@ exports.login = async (req, res) => {
       httpOnly: false,
       secure: process.env.NODE_ENV === "production", // True for HTTPS
       sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax", // Cross-origin support
-      domain:
-        process.env.NODE_ENV === "production"
-          ? ".eco-cashify.vercel.app"
-          : undefined,
+      domain:process.env.FE_URL,
       path: "/",
       maxAge: process.env.JWT_EXPIRES_IN * 60 * 60 * 1000,
     });
@@ -35,12 +32,9 @@ exports.login = async (req, res) => {
     res.cookie("user", JSON.stringify(user), {
       httpOnly: false,
       secure: process.env.NODE_ENV === "production",
-      sameSite: process.env.NODE_ENV === "production" ? "Strict" : "Lax",
+      sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
       maxAge: process.env.JWT_EXPIRES_IN * 60 * 60 * 1000,
-      domain:
-        process.env.NODE_ENV === "production"
-          ? ".eco-cashify.vercel.app"
-          : undefined,
+      domain: process.env.FE_URL,
       path: "/",
     });
 
