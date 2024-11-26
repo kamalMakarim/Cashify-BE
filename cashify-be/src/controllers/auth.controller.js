@@ -23,15 +23,17 @@ exports.login = async (req, res) => {
     res.cookie("token", token, {
       httpOnly: false,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "Strict",
+      sameSite: process.env.NODE_ENV === "production" ? "Strict" : "Lax",
       maxAge: process.env.JWT_EXPIRES_IN * 60 * 60 * 1000,
+      path: "/",
     });
 
     res.cookie("user", JSON.stringify(user), {
       httpOnly: false,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "Strict",
+      sameSite: process.env.NODE_ENV === "production" ? "Strict" : "Lax",
       maxAge: process.env.JWT_EXPIRES_IN * 60 * 60 * 1000,
+      path: "/",
     });
 
     res.status(200).json({
