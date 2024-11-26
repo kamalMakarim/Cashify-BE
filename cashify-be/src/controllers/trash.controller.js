@@ -78,12 +78,7 @@ exports.claim = async (req, res) => {
       sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax", // Cross-origin support
       domain:
         process.env.NODE_ENV === "production"
-          ? ".eco-cashify.vercel.app"
-          : undefined,
-      path: "/",
-      domain:
-        process.env.NODE_ENV === "production"
-          ? ".eco-cashify.vercel.app"
+          ? ".vercel.app"
           : undefined,
       path: "/",
     });
