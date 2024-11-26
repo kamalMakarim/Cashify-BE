@@ -77,7 +77,7 @@ def send_to_backend(image, label):
     img_bytes = img_encoded.tobytes()
 
     files = {'file': ('trash.jpg', img_bytes, 'image/jpeg')}
-    data = {'trashType': label, 'collector_id': "6741b22dadd8499ea5246ef7"}
+    data = {'trash_type': label, 'collector_id': "6741b22dadd8499ea5246ef7"}
 
     try:
         response = requests.post(BACKEND_URL, data=data, headers={'Content-Type': 'application/x-www-form-urlencoded'})

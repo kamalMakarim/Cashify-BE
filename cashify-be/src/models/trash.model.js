@@ -1,7 +1,7 @@
 const mongoose =  require("mongoose");
 
 const TrashSchema = new mongoose.Schema({
-    trashType: {
+    trash_type: {
         type: String,
         enum: ["cardboard", "glass", "metal", "paper", "plastic", "trash"],
         required: true

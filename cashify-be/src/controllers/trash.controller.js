@@ -11,7 +11,7 @@ const trashPrice = {
 };
 
 exports.create = async (req, res) => {
-  if (!req.body.trashType) {
+  if (!req.body.trash_type) {
     return res
       .status(400)
       .json({ success: false, message: "Trash type is required" });
@@ -22,8 +22,8 @@ exports.create = async (req, res) => {
       .json({ success: false, message: "collector ID is required" });
   }
   try {
-    const { trashType, collector_id } = req.body;
-    const trash = new Trash({ trashType, collected_at: collector_id });
+    const { trash_type, collector_id } = req.body;
+    const trash = new Trash({ trash_type, collected_at: collector_id });
     await trash.save();
     res.json({ success: true, message: "Trash created successfully", data: trash });
   } catch (error) {
@@ -32,7 +32,7 @@ exports.create = async (req, res) => {
 };
 
 exports.claim = async (req, res) => {
-  if (!req.body.trashId) {
+  if (!req.body.trash_id) {
     return res
       .status(400)
       .json({ success: false, message: "Trash ID is required" });
@@ -44,9 +44,9 @@ exports.claim = async (req, res) => {
       .json({ success: false, message: "User ID is required" });
   }
   try {
-    const { trashId } = req.body;
+    const { trash_id } = req.body;
     const userId = req.user._id;
-    const trash = await Trash.findById(trashId);
+    const trash = await Trash.findById(trash_id);
     const user = await User.findById(userId);
     if (!user) {
       return res
@@ -65,7 +65,7 @@ exports.claim = async (req, res) => {
     }
     trash.status = "claimed";
     await trash.save();
-    user.balance += trashPrice[trash.trashType];
+    user.balance += trashPrice[trash.trash_type];
     await user.save();
     res.json({ success: true, message: "Trash claimed successfully", data: trash });
   } catch (error) {
