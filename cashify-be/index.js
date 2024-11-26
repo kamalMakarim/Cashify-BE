@@ -13,7 +13,7 @@ require("./src/config/mongo.config").connectDB();
 const corsOptions = {
   origin: (origin, callback) => {
     // Allow requests from specific origins or any origin
-    const allowedOrigins = [process.env.FE_URL || 'http://localhost:5173'];
+    const allowedOrigins = ['http://localhost:5173', 'https://your-frontend-domain.com'];
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
@@ -22,7 +22,7 @@ const corsOptions = {
   },
   credentials: true, 
 };
-
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
