@@ -25,6 +25,7 @@ exports.login = async (req, res) => {
       secure: process.env.NODE_ENV === "production",
       sameSite: process.env.NODE_ENV === "production" ? "Strict" : "Lax",
       maxAge: process.env.JWT_EXPIRES_IN * 60 * 60 * 1000,
+      domain: process.env.NODE_ENV === "production" ? ".eco-cashify.vercel.app" : undefined,
       path: "/",
     });
 
@@ -33,6 +34,7 @@ exports.login = async (req, res) => {
       secure: process.env.NODE_ENV === "production",
       sameSite: process.env.NODE_ENV === "production" ? "Strict" : "Lax",
       maxAge: process.env.JWT_EXPIRES_IN * 60 * 60 * 1000,
+      domain: process.env.NODE_ENV === "production" ? ".eco-cashify.vercel.app" : undefined,
       path: "/",
     });
 
