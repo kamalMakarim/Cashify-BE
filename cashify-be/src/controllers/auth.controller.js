@@ -28,7 +28,7 @@ exports.login = async (req, res) => {
     });
 
     res.cookie("user", JSON.stringify(user), {
-      httpOnly: false,
+      httpOnly: true,
       secure: true,
       sameSite: "None",
       maxAge: process.env.JWT_EXPIRES_IN * 60 * 60 * 1000,
