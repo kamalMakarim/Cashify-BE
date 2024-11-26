@@ -35,6 +35,10 @@
         {
           "key": "Access-Control-Expose-Headers",
           "value": "Set-Cookie"
+        },
+        {
+          "key": "Set-Cookie",
+          "value": "Path=/; SameSite=None; Secure"
         }
       ]
     }
