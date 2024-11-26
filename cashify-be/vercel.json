@@ -31,6 +31,10 @@
         {
           "key": "Access-Control-Allow-Headers",
           "value": "X-Requested-With, Content-Type, Authorization, Cookie"
+        },
+        {
+          "key": "Access-Control-Expose-Headers",
+          "value": "Set-Cookie"
         }
       ]
     }

@@ -73,9 +73,9 @@ exports.claim = async (req, res) => {
     await user.save();
 
     res.cookie("user", JSON.stringify(user), {
-      httpOnly: true,
-      secure: true,
-      sameSite: "None",
+      httpOnly: false,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "Strict",
       maxAge: process.env.JWT_EXPIRES_IN * 60 * 60 * 1000,
     });
 
