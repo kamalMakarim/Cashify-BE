@@ -67,6 +67,13 @@ exports.claim = async (req, res) => {
     await trash.save();
     user.balance += trashPrice[trash.trash_type];
     await user.save();
+    
+    res.cookie("user", JSON.stringify(user), {
+      httpOnly: false,
+      secure: true,
+      sameSite: "strict",
+      maxAge: process.env.JWT_EXPIRES_IN * 60 * 60 * 1000,
+    });
     res.json({ success: true, message: "Trash claimed successfully", data: trash });
   } catch (error) {
     res.status(400).json({ success: false, message: error.message });

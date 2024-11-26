@@ -2,8 +2,10 @@ const jwt = require("jsonwebtoken");
 
 exports.authenticate = async (req, res, next) => {
   try {
-    const token = req.headers.cookie.split("=")[1];
-    if (!token) throw new Error("Unauthorized");
+    const cookies = req.headers.cookie.split("; ");
+    const tokenCookie = cookies.find(cookie => cookie.startsWith("token="));
+    if (!tokenCookie) throw new Error("Unauthorized");
+    const token = tokenCookie.split("=")[1];
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     req.user = decoded;
     console.log(decoded);

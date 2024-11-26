@@ -7,7 +7,7 @@ import time
 import qrcode
 
 # Backend server URL (replace with your server's URL)
-BACKEND_URL = "http://localhost:5000/trash/create"
+BACKEND_URL = "https://cashify-be.vercel.app/trash/create"
 
 # Define the class labels based on your folder structure
 class_labels = ['cardboard', 'glass', 'metal', 'paper', 'plastic', 'trash']
