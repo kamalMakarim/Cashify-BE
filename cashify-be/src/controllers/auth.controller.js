@@ -34,6 +34,8 @@ exports.login = async (req, res) => {
       maxAge: process.env.JWT_EXPIRES_IN * 60 * 60 * 1000,
     });
 
+    res.setHeader("Cache-Control", "no-store");
+
     res.status(200).json({
       success: true,
       message: "Login successful",
