@@ -76,17 +76,14 @@ exports.claim = async (req, res) => {
       httpOnly: false,
       secure: process.env.NODE_ENV === "production", // True for HTTPS
       sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax", // Cross-origin support
-      domain:
-        process.env.NODE_ENV === "production"
-          ? ".vercel.app"
-          : undefined,
+      domain: process.env.NODE_ENV === "production" ? ".vercel.app" : undefined,
       path: "/",
     });
 
     res.json({
       success: true,
       message: "Trash claimed successfully",
-      data: trash,
+      data: { trash: trash, user: user },
     });
   } catch (error) {
     res.status(400).json({ success: false, message: error.message });
