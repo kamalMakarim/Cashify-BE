@@ -10,7 +10,19 @@ const port = process.env.PORT || 5000;
 const app = express();
 
 require("./src/config/mongo.config").connectDB();
-app.use(cors());
+const corsOptions = {
+  origin: (origin, callback) => {
+    // Allow requests from specific origins or any origin
+    const allowedOrigins = [process.env.FE_URL || 'http://localhost:5173'];
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true, 
+};
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
