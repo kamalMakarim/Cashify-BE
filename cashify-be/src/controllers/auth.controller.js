@@ -23,7 +23,7 @@ exports.login = async (req, res) => {
     res.cookie("token", token, {
       httpOnly: true,
       secure: true,
-      sameSite: "strict",
+      sameSite: "None",
       maxAge: process.env.JWT_EXPIRES_IN * 60 * 60 * 1000,
     });
 
