@@ -54,9 +54,10 @@ def capture_and_classify():
         # Get the predicted label
         label = class_labels[class_index]
 
-        # if
-        if cv2.waitKey(1) & 0xFF == ord('s'):
-            print("button pressed")
+        # Check if the confidence is high enough to send data to backend
+        confidence, predicted = torch.max(torch.nn.functional.softmax(output, dim=1), 1)
+        if confidence.item() > 0.99:
+            print(f"High confidence detected: {confidence.item() * 100:.2f}% - {label}")
             send_to_backend(frame, label)
 
         # Display the frame with the predicted label
