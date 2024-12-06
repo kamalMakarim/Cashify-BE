@@ -2,6 +2,7 @@ const express = require("express");
 const userRoutes = require("./src/routes/user.routes");
 const trashRoutes = require('./src/routes/trash.routes');
 const collectionCenterRoutes = require('./src/routes/collection_center.routes');
+const invoiceRoutes = require("./src/routes/invoice.routes");
 const cors = require('cors');
 
 require("dotenv").config();
@@ -25,6 +26,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/user", userRoutes);
 app.use("/trash", trashRoutes);
 app.use("/collection-center", collectionCenterRoutes);
+app.use("/invoice", invoiceRoutes);
 
 
 app.listen(port, () => {

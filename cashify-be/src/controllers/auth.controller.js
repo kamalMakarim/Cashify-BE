@@ -17,7 +17,6 @@ exports.login = async (req, res) => {
     const token = jwt.sign(
       { role: user.role, email: user.email, _id: user._id },
       process.env.JWT_SECRET,
-      { expiresIn: "3h" }
     );
 
     res.cookie("token", token, {
@@ -29,19 +28,17 @@ exports.login = async (req, res) => {
           ? ".vercel.app"
           : undefined,
       path: "/",
-      maxAge: process.env.JWT_EXPIRES_IN * 60 * 60 * 1000,
     });
 
     res.cookie("user", JSON.stringify(user), {
       httpOnly: false,
       secure: process.env.NODE_ENV === "production",
       sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
-      maxAge: process.env.JWT_EXPIRES_IN * 60 * 60 * 1000,
       domain:
         process.env.NODE_ENV === "production"
           ? ".vercel.app"
           : undefined,
-      path: "/",
+      path: "/"
     });
 
     res.status(200).json({
