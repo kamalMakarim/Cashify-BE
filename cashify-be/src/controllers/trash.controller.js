@@ -68,9 +68,9 @@ exports.claim = async (req, res) => {
         .json({ success: false, message: "Trash already claimed" });
     }
     trash.status = "claimed";
-    await trash.save();
+    await Trash.updateOne({ _id: trash_id }, { status: trash.status });
     user.balance += trashPrice[trash.trash_type];
-    await user.save();
+    await User.updateOne({ _id: userId }, { balance: user.balance });
 
     res.cookie("user", JSON.stringify(user), {
       httpOnly: false,

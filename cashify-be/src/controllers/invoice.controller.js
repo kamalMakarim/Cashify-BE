@@ -63,9 +63,9 @@ exports.pay = async (req, res) => {
         merchant.balance += invoice.amount;
         customer.balance -= invoice.amount;
         invoice.status = "paid";
-        await customer.save();
-        await invoice.save();
-        await merchant.save();
+        await User.updateOne({ _id: customerId }, { balance: customer.balance });
+        await Invoice.updateOne({ _id: invoice_id }, { status: invoice.status });
+        await User.updateOne({ _id: invoice.merchant }, { balance: merchant.balance });
         res.json({
             success: true,
             message: "Invoice paid successfully",

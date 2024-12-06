@@ -56,12 +56,12 @@ exports.transfer = async (req, res) => {
     }
     sender.balance -= amount;
     recipient.balance += amount;
-    await sender.save();
-    await recipient.save();
+    await User.updateOne({ _id: senderId }, { balance: sender.balance });
+    await User.updateOne({ _id: recipient._id }, { balance: recipient.balance });
     res.json({
       success: true,
       message: "Transfer successful",
-      data: { sender, recipient },
+      data: { sender: sender, recipient: recipient },
     });
   } catch (error) {
     res.status(400).json({ success: false, message: error.message });
