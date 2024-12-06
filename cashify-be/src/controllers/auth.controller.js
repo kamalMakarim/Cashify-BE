@@ -17,6 +17,7 @@ exports.login = async (req, res) => {
     const token = jwt.sign(
       { role: user.role, email: user.email, _id: user._id },
       process.env.JWT_SECRET,
+      { expiresIn: "1d" }
     );
 
     res.cookie("token", token, {
@@ -49,6 +50,7 @@ exports.login = async (req, res) => {
         role: user.role,
         balance: user.balance,
         phoneNumber: user.phoneNumber,
+        token: token,
       },
     });
   } catch (error) {

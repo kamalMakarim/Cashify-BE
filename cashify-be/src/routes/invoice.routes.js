@@ -3,6 +3,6 @@ const authMiddleware = require("../middlewares/auth.middleware");
 const router = require("express").Router();
 
 router.post("/create", authMiddleware.authenticate, invoiceController.create);
-router.post("/pay", authMiddleware.authenticate, authMiddleware.authorize("merchant"),invoiceController.pay);
-
+router.post("/pay", authMiddleware.authenticate,invoiceController.pay);
+router.get("/status", authMiddleware.authenticate, authMiddleware.authorize("merchant"),invoiceController.status);
 module.exports = router;

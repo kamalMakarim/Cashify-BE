@@ -66,7 +66,36 @@ exports.pay = async (req, res) => {
         res.json({
             success: true,
             message: "Invoice paid successfully",
-            data: invoice,
+            data: {invoice: invoice, user: customer},
+        });
+    } catch (error) {
+        res.status(400).json({ success: false, message: error.message });
+    }
+}
+
+exports.status = async (req, res) => {
+    if (!req.query.invoice_id) {
+        return res
+        .status(400)
+        .json({ success: false, message: "Invoice ID is required" });
+    }
+    try {
+        const { invoice_id } = req.query;
+        const invoice = await Invoice.findById(invoice_id);
+        if (!invoice) {
+            return res
+            .status(400)
+            .json({ success: false, message: "Invoice not found" });
+        }
+        if(req.user._id != invoice.merchant) {
+            return res
+            .status(400)
+            .json({ success: false, message: "Unauthorized" });
+        }
+        res.json({
+            success: true,
+            message: "Invoice status",
+            data: {invoice: invoice, user: req.user},
         });
     } catch (error) {
         res.status(400).json({ success: false, message: error.message });
