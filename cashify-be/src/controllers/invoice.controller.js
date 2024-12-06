@@ -59,10 +59,13 @@ exports.pay = async (req, res) => {
             .status(400)
             .json({ success: false, message: "Invoice already paid" });
         }
+        const merchant = await User.findById(invoice.merchant);
+        merchant.balance += invoice.amount;
         customer.balance -= invoice.amount;
         invoice.status = "paid";
         await customer.save();
         await invoice.save();
+        await merchant.save();
         res.json({
             success: true,
             message: "Invoice paid successfully",
