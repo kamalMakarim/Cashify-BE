@@ -69,7 +69,7 @@ exports.claim = async (req, res) => {
     }
     trash.status = "claimed";
     await Trash.updateOne({ _id: trash_id }, { status: trash.status });
-    user.balance += trashPrice[trash.trash_type];
+    user.balance = parseInt(trashPrice[trash.trash_type]) + parseInt(user.balance);
     await User.updateOne({ _id: userId }, { balance: user.balance });
 
     res.cookie("user", JSON.stringify(user), {

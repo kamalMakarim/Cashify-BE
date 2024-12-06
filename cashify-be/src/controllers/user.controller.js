@@ -54,8 +54,8 @@ exports.transfer = async (req, res) => {
         .status(400)
         .json({ success: false, message: "Insufficient balance" });
     }
-    sender.balance -= amount;
-    recipient.balance += amount;
+    sender.balance = parseInt(sender.balance) - parseInt(amount);
+    recipient.balance = parseInt(recipient.balance) + parseInt(amount);
     await User.updateOne({ _id: senderId }, { balance: sender.balance });
     await User.updateOne({ _id: recipient._id }, { balance: recipient.balance });
     res.json({

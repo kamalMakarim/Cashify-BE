@@ -60,8 +60,8 @@ exports.pay = async (req, res) => {
             .json({ success: false, message: "Invoice already paid" });
         }
         const merchant = await User.findById(invoice.merchant);
-        merchant.balance += invoice.amount;
-        customer.balance -= invoice.amount;
+        merchant.balance = parseInt(merchant.balance) + parseInt(invoice.amount);
+        customer.balance = parseInt(customer.balance) - parseInt(invoice.amount);
         invoice.status = "paid";
         await User.updateOne({ _id: customerId }, { balance: customer.balance });
         await Invoice.updateOne({ _id: invoice_id }, { status: invoice.status });
