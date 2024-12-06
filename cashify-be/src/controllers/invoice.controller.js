@@ -92,10 +92,11 @@ exports.status = async (req, res) => {
             .status(400)
             .json({ success: false, message: "Unauthorized" });
         }
+        const merchant = await User.findById(invoice.merchant);
         res.json({
             success: true,
             message: "Invoice status",
-            data: {invoice: invoice, user: req.user},
+            data: {invoice: invoice, user: merchant},
         });
     } catch (error) {
         res.status(400).json({ success: false, message: error.message });
