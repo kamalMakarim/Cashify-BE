@@ -2,11 +2,11 @@ const Trash = require("../models/trash.model");
 const User = require("../models/user.model");
 
 const trashPrice = {
-  cardboard: 500,
-  glass: 2000,
+  cardboard: 4000,
+  glass: 1200,
   metal: 1000,
-  paper: 100,
-  plastic: 100,
+  paper: 25,
+  plastic: 500,
   trash: 100,
 };
 
