@@ -51,6 +51,7 @@ exports.login = async (req, res) => {
         balance: user.balance,
         phoneNumber: user.phoneNumber,
         token: token,
+        _id: user._id,
       },
     });
   } catch (error) {
