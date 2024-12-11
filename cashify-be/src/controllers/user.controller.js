@@ -67,3 +67,15 @@ exports.transfer = async (req, res) => {
     res.status(400).json({ success: false, message: error.message });
   }
 };
+
+exports.getProfile = async(req, res) => {
+  try {
+    const user = await User.findById(req.user._id);
+    if (!user) {
+      return res.status(400).json({ success: false, message: "User not found" });
+    }
+    res.json({ success: true, data: user });
+  } catch (error) {
+    res.status(400).json({ success: false, message: error.message });
+  }
+}
