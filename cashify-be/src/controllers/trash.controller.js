@@ -41,7 +41,6 @@ exports.claim = async (req, res) => {
       .status(400)
       .json({ success: false, message: "Trash ID is required" });
   }
-  console.log(req.user);
   if (!req.user._id) {
     return res
       .status(400)
